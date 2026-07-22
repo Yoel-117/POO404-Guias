@@ -1,0 +1,20 @@
+package ahorros;
+
+public class Cliente {
+    private String nombre;
+    private String dui;
+
+    public Cliente(String nombre, String dui) {
+        this.nombre = nombre;
+        this.dui = dui;
+    }
+
+    public String getNombre() { return nombre; }
+    public String getDui() { return dui; }
+
+    // Formato usado al imprimir el listado de clientes
+    @Override
+    public String toString() {
+        return nombre + " (dui: " + dui + ")";
+    }
+}
