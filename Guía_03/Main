@@ -1,0 +1,101 @@
+package ahorros;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+
+    static ArrayList<Cliente> clientes = new ArrayList<>();
+    static ArrayList<CuentaAhorro> cuentas = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n===== Mantenimiento de Cuentas de Ahorro =====");
+            System.out.println("A) Registrar un cliente");
+            System.out.println("B) Abrir una cuenta de ahorro");
+            System.out.println("C) Salir");
+            System.out.print("Seleccione una opcion: ");
+            String opcion = sc.nextLine().trim().toUpperCase();
+
+            switch (opcion) {
+                case "A":
+                    registrarCliente();
+                    break;
+                case "B":
+                    abrirCuenta();
+                    break;
+                case "C":
+                    salir = true;
+                    System.out.println("Saliendo del sistema...");
+                    break;
+                default:
+                    System.out.println("Opcion invalida, intente de nuevo.");
+            }
+        }
+    }
+
+    // Opcion A: pide los datos del cliente y lo agrega a la lista
+    static void registrarCliente() {
+        System.out.print("Nombre del cliente: ");
+        String nombre = sc.nextLine();
+        System.out.print("DUI del cliente: ");
+        String dui = sc.nextLine();
+
+        clientes.add(new Cliente(nombre, dui));
+        mostrarClientes();
+
+        System.out.print("-> Presione Enter para retornar al menu");
+        sc.nextLine();
+    }
+
+    // Imprime el listado de clientes con el formato pedido en el enunciado
+    static void mostrarClientes() {
+        System.out.println("\nClientes registrados (" + clientes.size() + "):");
+        System.out.println("# Datos del Cliente");
+        for (int i = 0; i < clientes.size(); i++) {
+            System.out.println((i + 1) + ". " + clientes.get(i));
+        }
+    }
+
+    // Opcion B: elige un cliente ya registrado y le abre una cuenta de ahorro
+    static void abrirCuenta() {
+        if (clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados todavia.");
+            return;
+        }
+
+        mostrarClientes();
+        System.out.print("Ingrese el numero del cliente: ");
+        int num = Integer.parseInt(sc.nextLine());
+
+        if (num < 1 || num > clientes.size()) {
+            System.out.println("Numero invalido.");
+            return;
+        }
+        Cliente elegido = clientes.get(num - 1);
+
+        System.out.print("Monto inicial de apertura: $ ");
+        double monto = Double.parseDouble(sc.nextLine());
+
+        CuentaAhorro cuenta = new CuentaAhorro(elegido, monto);
+        cuentas.add(cuenta);
+
+        mostrarCuenta(cuenta);
+
+        System.out.print("-> Presione Enter para retornar al menu");
+        sc.nextLine();
+    }
+
+    // Muestra los datos de la cuenta recien creada y su historial de transacciones
+    static void mostrarCuenta(CuentaAhorro cuenta) {
+        System.out.println("\n* Titular de Cuenta: " + cuenta.getTitular());
+        System.out.println("* Saldo actual: $ " + String.format("%.2f", cuenta.getSaldo()));
+        System.out.println("id.|fecha | Tipo transaccion |Descripcion |Monto |Saldo|");
+        for (Transaccion t : cuenta.getTransacciones()) {
+            System.out.println(t.toFila());
+        }
+    }
+}
