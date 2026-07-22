@@ -1,0 +1,25 @@
+package ahorros;
+
+import java.util.ArrayList;
+
+public class CuentaAhorro {
+    private Cliente titular;
+    private double saldo;
+    private ArrayList<Transaccion> transacciones;
+
+    public CuentaAhorro(Cliente titular, double montoInicial) {
+        this.titular = titular;
+        this.saldo = 0;
+        this.transacciones = new ArrayList<>();
+        depositar(montoInicial, "apertura de cuenta"); // primer movimiento de la cuenta
+    }
+
+    public void depositar(double monto, String descripcion) {
+        saldo += monto;
+        transacciones.add(new Transaccion(transacciones.size() + 1, "Deposito", descripcion, monto, saldo));
+    }
+
+    public Cliente getTitular() { return titular; }
+    public double getSaldo() { return saldo; }
+    public ArrayList<Transaccion> getTransacciones() { return transacciones; }
+}
