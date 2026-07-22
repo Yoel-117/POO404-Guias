@@ -1,0 +1,32 @@
+package ahorros;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Transaccion {
+    private static final DateTimeFormatter FORMATO =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    private int id;
+    private LocalDateTime fecha;
+    private String tipo;
+    private String descripcion;
+    private double monto;
+    private double saldoResultante;
+
+    public Transaccion(int id, String tipo, String descripcion, double monto, double saldoResultante) {
+        this.id = id;
+        this.fecha = LocalDateTime.now();
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.monto = monto;
+        this.saldoResultante = saldoResultante;
+    }
+
+    // Arma la fila de la tabla de transacciones que se muestra en pantalla
+    public String toFila() {
+        return id + ".| " + fecha.format(FORMATO) + " | " + tipo +
+                " | " + descripcion + " | $ " + String.format("%.2f", monto) +
+                " | $ " + String.format("%.2f", saldoResultante) + " |";
+    }
+}
